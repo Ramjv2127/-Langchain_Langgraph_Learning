@@ -28,5 +28,23 @@ def demo_basic_chain():
 
     return basic_chain
 
+
+def demo_batch_execution():
+    """ Demonstrate batch execution - Multiple inputs at once """
+    #1 . Deffine Prompt template
+
+    batch_prompt_template = ChatPromptTemplate.from_template("Translate to French: {text}")
+    model = ChatOpenAI(model='gpt-4o-mini', temperature=0.4)
+    parser = StrOutputParser()
+
+    # 2. Create a batch chain:
+    batch_chain = batch_prompt_template | model | parser
+
+    # 3. Batch inputs
+    inputs = [{"text": "The quick brown fox jumps over the lazy dog"}, {"text": "The quick brown fox jumps over the lazy dog"}]
+    results = batch_chain.invoke(inputs)
+    print(f"Batch results = {results}")
+
 if __name__ == "__main__":
     demo_basic_chain()
+    demo_batch_execution()
